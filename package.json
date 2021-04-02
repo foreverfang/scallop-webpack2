@@ -1,0 +1,25 @@
+{
+  "name": "scallop-webpack2",
+  "version": "1.0.0",
+  "description": "webpack进阶配置",
+  "main": "index.js",
+  "dependencies": {
+    "webpack-cli": "^4.6.0",
+    "webpack": "^5.30.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foreverfang/scallop-webpack2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/foreverfang/scallop-webpack2/issues"
+  },
+  "homepage": "https://github.com/foreverfang/scallop-webpack2#readme"
+}
