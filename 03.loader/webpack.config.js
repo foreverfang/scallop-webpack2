@@ -8,17 +8,23 @@ module.exports = {
                 // loader: path.resolve(__dirname, 'loaders', 'loader1')
                 // loader: 'loader1'
                 // loader执行顺序：从下到上，从右到左
-                use: [
-                    'loader1',
-                    'loader2',
-                    {
-                        loader: 'loader3',
-                        options: {
-                            name: 'fang',
-                            age: 18
-                        }
-                    }
-                ]
+                // use: [
+                //     'loader1',
+                //     'loader2',
+                //     {
+                //         loader: 'loader3',
+                //         options: {
+                //             name: 'fang',
+                //             age: 18
+                //         }
+                //     }
+                // ]
+                loader: 'babelLoader',
+                options: {
+                  presets: [
+                    '@babel/preset-env'
+                  ]
+                }
             }
         ]
     },
