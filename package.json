@@ -11,7 +11,8 @@
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
     "loader-utils": "^2.0.0",
-    "schema-utils": "^3.0.0"
+    "schema-utils": "^3.0.0",
+    "tapable": "^2.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

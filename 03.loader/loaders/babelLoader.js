@@ -1,5 +1,5 @@
-const {getOptions} = require('loader-utils')
-const {validate} = require('schema-utils')
+const { getOptions } = require('loader-utils')
+const { validate } = require('schema-utils')
 const babel = require('@babel/core')
 const util = require('util')
 
