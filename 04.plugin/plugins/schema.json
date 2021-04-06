@@ -8,8 +8,8 @@
             "type": "string"
         },
         "ignore": {
-            "type": "string"
+            "type": "array"
         }
     },
-    "addtionalProperties": false
+    "additionalProperties": false
 }
