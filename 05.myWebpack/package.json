@@ -7,7 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "node ./script/built.js"
+    "build": "node ./script/build.js",
+    "debug": "node --inspect-brk ./script/build.js"
   },
   "keywords": [],
   "author": "",
