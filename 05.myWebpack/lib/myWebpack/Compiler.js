@@ -1,5 +1,6 @@
+const fs = require('fs')
+const path = require('path')
 const { getAst, getDeps, getCode } = require('./parser')
-
 class Compiler {
     constructor(options = {}) {
         // webpack配置对象
@@ -41,6 +42,35 @@ class Compiler {
         })
 
         console.log(this.modules)
+        // 将依赖整理成更好的依赖关系图
+        /**
+         * {
+         *    'index.js': {
+         *       code: 'xxx',
+         *       deps: { 'add.js': 'xxx' }
+         *    },
+         *    'add.js': {
+         *       code: 'xxx',
+         *       deps: {}
+         *     }
+         * }
+         */
+
+
+        const depsGraph = this.modules.reduce((graph, module) => {
+            return {
+                ...graph,
+                [module.filePath]: {
+                    code: module.code,
+                    deps: module.deps
+                }
+            }
+        }, {})
+
+        console.log(depsGraph)
+
+        this.generate(depsGraph)
+
     }
 
     // 开始构建
@@ -60,6 +90,54 @@ class Compiler {
             // 当前文件解析后的代码
             code
         }
+    }
+
+    // 生成输出资源
+    generate(depsGraph) {
+        /**
+         *  index.js 代码
+         * '"use strict";\n' +
+            '\n' +
+            'var _add = _interopRequireDefault(require("./add.js"));\n' +
+            '\n' +
+            'var _count = _interopRequireDefault(require("./count.js"));\n' +
+            '\n' +
+            'function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }\n' +
+            '\n' +
+            'console.log((0, _add["default"])(1, 2));\n' +
+            'console.log((0, _count["default"])(3, 1));'
+         */
+        const bundle = `
+            (function(depsGraph){
+                // require目的：为了加载入口文件
+                functioin require(module){
+                    // 定义模块内部的require函数
+                    function localRequire(relativePath) {
+                        // 为了找到当前要引入模块的绝对路径，通过require加载
+                        return require(depsGraph[module].deps[relativePath])
+                    } 
+                    
+                    // 定义暴露对象（将来模块要暴露的内容）
+                    var exports = {}
+
+                    (function(require, exports, code){
+                        eval(code)
+                    })(localRequire, exports, depsGraph[module].code)
+
+                    // 作为require函数的返回值返回回去
+                    // 后面的require函数能得到暴露的内容
+                    return exports
+                }
+                // 加载入口文件
+                require('${this.options.entry}')
+
+            })(${JSON.stringify(depsGraph)})
+        `
+
+        // 生成输出文件的绝对路径
+        const filePath = path.resolve(this.options.output.path, this.options.output.filename)
+        // 写入文件
+        fs.writeFileSync(filePath, bundle, 'utf-8')
     }
 }
 
